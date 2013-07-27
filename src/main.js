@@ -1,5 +1,6 @@
 (function() {
-
+	// max square size is 240.
+	var score = 0;
 	var socket = io.connect('http://localhost');
 	var canvas = window.document.getElementsByClassName('canvas')[0];
 	var context = canvas.getContext('2d');
@@ -44,7 +45,7 @@
 		var square = Object.create(squareMethods);
 		var initialSettings = {
 			size: 50,
-			speed: 20,
+			speed: 25,
 			topX: 0,
 			topY: 0,
 			bottomX: 0,
@@ -59,14 +60,14 @@
 	};
 
 	var square = makeSquare();
-	var boundry = makeSquare();
+	window.boundry = makeSquare();
 
 	square.isInBoundry = function() {
 		var topXDiff = Math.abs(square.topX - boundry.topX);
 		var topYDiff = Math.abs(square.topY - boundry.topY);
 		var bottomXDiff = Math.abs(square.bottomX - boundry.bottomX);
 		var bottomYDiff = Math.abs(square.bottomY - boundry.bottomY);
-		if (topXDiff < 5 && topXDiff > -5 && topYDiff < 5 && topYDiff > -5 && bottomXDiff < 5 && bottomXDiff > -5 && bottomYDiff < 5 && bottomYDiff > -5) {
+		if (topXDiff < 20 && topXDiff > -20 && topYDiff < 20 && topYDiff > -20 && bottomXDiff < 20 && bottomXDiff > -20 && bottomYDiff < 20 && bottomYDiff > -20) {
 			return true;
 		}
 	};
@@ -85,6 +86,9 @@
 		}
 	});
 
+	var wholeNumRandomRange = function(min, max) {
+          return Math.round(Math.random() * (max - min) + min);
+    };
 
 	var drawBackground = function() {
 		context.fillStyle = 'black';
@@ -112,13 +116,26 @@
 	});
 
 	var initSquarePosition = function() {
-		square.setSquareX(canvas.width / 2);
-		square.setSquareY(canvas.height / 2);
+		setNewSquare(square, canvas.width / 2, canvas.height / 2, 50);
 	};
 
 	var initBoundryPosition = function() {
-		boundry.setSquareX(360);
-		boundry.setSquareY(200);
+		setNewSquare(boundry, 360, 200, 120);
+	};
+
+	var setNewSquare = function(square, x, y, size) {
+		square.setSquareX(x);
+		square.setSquareY(y);
+		square.setSquareSize(size);
+	};
+
+	var winning = function() {
+		var x = wholeNumRandomRange(0, canvas.width - boundry.size);
+		var y = wholeNumRandomRange(0, canvas.height - boundry.size);
+		var size =  wholeNumRandomRange(40, 240);
+
+		setNewSquare(boundry, x, y, size);
+		score += 1;
 	};
 
 	var mainLoop = function() {
@@ -128,7 +145,8 @@
 		drawBoundry(boundry);
 
 		if (square.isInBoundry()) {
-			console.log('winning');
+			winning();
+			console.log(score);
 		}
 	};
 
