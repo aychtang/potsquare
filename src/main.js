@@ -45,7 +45,7 @@
 		var square = Object.create(squareMethods);
 		var initialSettings = {
 			size: 50,
-			speed: 25,
+			speed: 10,
 			topX: 0,
 			topY: 0,
 			bottomX: 0,
@@ -72,23 +72,32 @@
 		}
 	};
 
-	window.document.addEventListener('keydown', function(event) {
-		var key = event.keyCode;
-		var dirMap = {
-			37: square.left,
-			38: square.up,
-			39: square.right,
-			40: square.down
-		};
+	var keys = {};
 
-		if (dirMap[key]) {
-			dirMap[key].bind(square)();
+	window.dirMap = {
+		37: square.left,
+		38: square.up,
+		39: square.right,
+		40: square.down
+	};
+
+	window.document.addEventListener('keydown', function(event) {
+		var keyCode = event.keyCode;
+		if (dirMap[keyCode]) {
+			keys[keyCode] = true;
 		}
 	});
 
+	window.document.addEventListener('keyup', function(event) {
+		var keyCode = event.keyCode;
+		keys[keyCode] && (delete keys[keyCode]);
+	});
+
+
+
 	var wholeNumRandomRange = function(min, max) {
-          return Math.round(Math.random() * (max - min) + min);
-    };
+		return Math.round(Math.random() * (max - min) + min);
+	};
 
 	var drawBackground = function() {
 		context.fillStyle = 'black';
@@ -140,6 +149,13 @@
 
 	var mainLoop = function() {
 		window.requestAnimationFrame(mainLoop);
+
+		for (var key in keys) {
+			if (dirMap[key]) {
+				dirMap[key].bind(square)();
+			}
+		}
+
 		drawBackground();
 		drawSquare(square);
 		drawBoundry(boundry);
