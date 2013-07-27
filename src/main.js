@@ -6,7 +6,21 @@
 	canvas.width = window.document.width;
 	canvas.height = window.document.height;
 
-	document.addEventListener('keydown', function(event) {
+	var makeSquare = function() {
+		return {
+			size: 50,
+			speed: 20,
+			topX: 0,
+			topY: 0,
+			bottomX: 0,
+			bottomY: 0
+		};
+	};
+
+	var square = makeSquare();
+	var boundry = makeSquare();
+
+	window.document.addEventListener('keydown', function(event) {
 		var key = event.keyCode;
 		var dirMap = {
 			37: square.left,
@@ -19,15 +33,6 @@
 			dirMap[key]();
 		}
 	});
-
-	var square = {
-		size: 50,
-		speed: 20,
-		topX: 0,
-		topY: 0,
-		bottomX: 0,
-		bottomY: 0
-	};
 
 	square.setSquareX = function(x) {
 		square.topX = x;
@@ -60,6 +65,7 @@
 	square.down = function() {
 		square.setSquareY(square.topY + square.speed);
 	};
+
 
 	var drawBackground = function() {
 		context.fillStyle = 'black';
