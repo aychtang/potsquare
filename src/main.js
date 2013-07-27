@@ -24,7 +24,7 @@
 		x: canvas.width / 2,
 		y: canvas.height / 2,
 		size: 50,
-		square.speed: 20
+		speed: 20
 	};
 
 	square.left = function() {
