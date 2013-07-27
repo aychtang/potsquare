@@ -6,8 +6,43 @@
 	canvas.width = window.document.width;
 	canvas.height = window.document.height;
 
+	squareMethods = {};
+
+	squareMethods.setSquareX = function(x) {
+		this.topX = x;
+		this.bottomX = this.topX + this.size;
+	};
+
+	squareMethods.setSquareY = function(y) {
+		this.topY = y;
+		this.bottomY = this.topY + this.size;
+	};
+
+	squareMethods.setSquareSize = function(size) {
+		this.size = size;
+		this.bottomY = this.topY + this.size;
+		this.bottomX = this.topX + this.size;
+	};
+
+	squareMethods.left = function() {
+		this.setSquareX(this.topX - this.speed);
+	};
+
+	squareMethods.right = function() {
+		this.setSquareX(this.topX + this.speed);
+	};
+
+	squareMethods.up = function() {
+		this.setSquareY(this.topY - this.speed);
+	};
+
+	squareMethods.down = function() {
+		this.setSquareY(this.topY + this.speed);
+	};
+
 	var makeSquare = function() {
-		return {
+		var square = Object.create(squareMethods);
+		var initialSettings = {
 			size: 50,
 			speed: 20,
 			topX: 0,
@@ -15,6 +50,12 @@
 			bottomX: 0,
 			bottomY: 0
 		};
+
+		for (var property in initialSettings) {
+			square[property] = initialSettings[property];
+		}
+
+		return square;
 	};
 
 	var square = makeSquare();
@@ -30,41 +71,9 @@
 		};
 
 		if (dirMap[key]) {
-			dirMap[key]();
+			dirMap[key].bind(square)();
 		}
 	});
-
-	square.setSquareX = function(x) {
-		square.topX = x;
-		square.bottomX = square.topX + square.size;
-	};
-
-	square.setSquareY = function(y) {
-		square.topY = y;
-		square.bottomY = square.topY + square.size;
-	};
-
-	square.setSquareSize = function(size) {
-		square.size = size;
-		square.bottomY = square.topY + square.size;
-		square.bottomX = square.topX + square.size;
-	};
-
-	square.left = function() {
-		square.setSquareX(square.topX - square.speed);
-	};
-
-	square.right = function() {
-		square.setSquareX(square.topX + square.speed);
-	};
-
-	square.up = function() {
-		square.setSquareY(square.topY - square.speed);
-	};
-
-	square.down = function() {
-		square.setSquareY(square.topY + square.speed);
-	};
 
 
 	var drawBackground = function() {
@@ -77,6 +86,17 @@
 		context.fillRect(square.topX, square.topY, square.size, square.size);
 	};
 
+	var drawBoundry = function(boundry) {
+		context.strokeStyle = 'white';
+		context.beginPath();
+		context.moveTo(boundry.topX, boundry.topY); // top left.
+		context.lineTo(boundry.topX + boundry.size, boundry.topY) // top right.
+		context.lineTo(boundry.bottomX, boundry.bottomY) // bottom right.
+		context.lineTo(boundry.bottomX - boundry.size, boundry.bottomY); // bottom left.
+		context.lineTo(boundry.topX, boundry.topY)
+		context.stroke();
+	};
+
 	socket.on('potread', function(data) {
 		square.setSquareSize(data);
 	});
@@ -86,12 +106,19 @@
 		square.setSquareY(canvas.height / 2);
 	};
 
+	var initBoundryPosition = function() {
+		boundry.setSquareX(360);
+		boundry.setSquareY(200);
+	};
+
 	var mainLoop = function() {
 		window.requestAnimationFrame(mainLoop);
 		drawBackground();
 		drawSquare(square);
+		drawBoundry(boundry);
 	};
 
+	initBoundryPosition();
 	initSquarePosition();
 	mainLoop();
 
