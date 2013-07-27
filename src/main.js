@@ -61,7 +61,7 @@
 	};
 
 	var square = makeSquare();
-	window.boundry = makeSquare();
+	var boundry = makeSquare();
 
 	square.isInBoundry = function() {
 		var topXDiff = Math.abs(square.topX - boundry.topX);
@@ -75,7 +75,7 @@
 
 	var keys = {};
 
-	window.dirMap = {
+	var dirMap = {
 		37: square.left,
 		38: square.up,
 		39: square.right,
@@ -93,8 +93,6 @@
 		var keyCode = event.keyCode;
 		keys[keyCode] && (delete keys[keyCode]);
 	});
-
-
 
 	var wholeNumRandomRange = function(min, max) {
 		return Math.round(Math.random() * (max - min) + min);
@@ -169,7 +167,6 @@
 
 		if (square.isInBoundry()) {
 			winning();
-			console.log(score);
 		}
 	};
 
