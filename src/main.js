@@ -73,6 +73,12 @@
 		}
 	};
 
+	square.outOfBounds = function() {
+		if (square.topX < 0 || square.topX > document.width || square.bottomY < 0 || square.bottomY > document.height) {
+			return true;
+		}
+	};
+
 	var keys = {};
 
 	var dirMap = {
@@ -134,16 +140,21 @@
 	var setNewSquare = function(square, x, y, size) {
 		square.setSquareX(x);
 		square.setSquareY(y);
-		square.setSquareSize(size);
+		size && square.setSquareSize(size);
 	};
 
 	var winning = function() {
-		var size =  wholeNumRandomRange(40, 240);
+		var size =  wholeNumRandomRange(20, 240);
 		var x = wholeNumRandomRange(0, canvas.width - size);
 		var y = wholeNumRandomRange(0, canvas.height - size);
 
 		setNewSquare(boundry, x, y, size);
 		score += 1;
+	};
+
+	var losing = function() {
+		setNewSquare(square, canvas.width / 2, canvas.height / 2);
+		score -= 1;
 	};
 
 	var renderScore = function() {
@@ -167,6 +178,10 @@
 
 		if (square.isInBoundry()) {
 			winning();
+		}
+
+		if (square.outOfBounds()) {
+			losing();
 		}
 	};
 
