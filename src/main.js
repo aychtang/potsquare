@@ -130,9 +130,9 @@
 	};
 
 	var winning = function() {
-		var x = wholeNumRandomRange(0, canvas.width - boundry.size);
-		var y = wholeNumRandomRange(0, canvas.height - boundry.size);
 		var size =  wholeNumRandomRange(40, 240);
+		var x = wholeNumRandomRange(0, canvas.width - size);
+		var y = wholeNumRandomRange(0, canvas.height - size);
 
 		setNewSquare(boundry, x, y, size);
 		score += 1;
