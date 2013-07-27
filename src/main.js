@@ -61,6 +61,16 @@
 	var square = makeSquare();
 	var boundry = makeSquare();
 
+	square.isInBoundry = function() {
+		var topXDiff = Math.abs(square.topX - boundry.topX);
+		var topYDiff = Math.abs(square.topY - boundry.topY);
+		var bottomXDiff = Math.abs(square.bottomX - boundry.bottomX);
+		var bottomYDiff = Math.abs(square.bottomY - boundry.bottomY);
+		if (topXDiff < 5 && topXDiff > -5 && topYDiff < 5 && topYDiff > -5 && bottomXDiff < 5 && bottomXDiff > -5 && bottomYDiff < 5 && bottomYDiff > -5) {
+			return true;
+		}
+	};
+
 	window.document.addEventListener('keydown', function(event) {
 		var key = event.keyCode;
 		var dirMap = {
@@ -116,6 +126,10 @@
 		drawBackground();
 		drawSquare(square);
 		drawBoundry(boundry);
+
+		if (square.isInBoundry()) {
+			console.log('winning');
+		}
 	};
 
 	initBoundryPosition();
