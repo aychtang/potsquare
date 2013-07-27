@@ -23,23 +23,24 @@
 	var square = {
 		x: canvas.width / 2,
 		y: canvas.height / 2,
-		size: 50
+		size: 50,
+		square.speed: 20
 	};
 
 	square.left = function() {
-		square.x -= 20;
+		square.x -= square.speed;
 	};
 
 	square.right = function() {
-		square.x += 20;
+		square.x += square.speed;
 	};
 
 	square.up = function() {
-		square.y -= 20;
+		square.y -= square.speed;
 	};
 
 	square.down = function() {
-		square.y += 20;
+		square.y += square.speed;
 	};
 
 	var drawBackground = function() {
