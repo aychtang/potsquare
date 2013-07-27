@@ -6,6 +6,7 @@
 	var context = canvas.getContext('2d');
 	canvas.width = window.document.width;
 	canvas.height = window.document.height;
+	context.font = "20pt Arial";
 
 	squareMethods = {};
 
@@ -67,7 +68,7 @@
 		var topYDiff = Math.abs(square.topY - boundry.topY);
 		var bottomXDiff = Math.abs(square.bottomX - boundry.bottomX);
 		var bottomYDiff = Math.abs(square.bottomY - boundry.bottomY);
-		if (topXDiff < 20 && topXDiff > -20 && topYDiff < 20 && topYDiff > -20 && bottomXDiff < 20 && bottomXDiff > -20 && bottomYDiff < 20 && bottomYDiff > -20) {
+		if (topXDiff < 15 && topXDiff > -15 && topYDiff < 15 && topYDiff > -15 && bottomXDiff < 15 && bottomXDiff > -15 && bottomYDiff < 15 && bottomYDiff > -15) {
 			return true;
 		}
 	};
@@ -147,6 +148,11 @@
 		score += 1;
 	};
 
+	var renderScore = function() {
+		context.fillStyle = "turquoise";
+		context.fillText("Score: " + score, 20, 40);
+	};
+
 	var mainLoop = function() {
 		window.requestAnimationFrame(mainLoop);
 
@@ -159,6 +165,7 @@
 		drawBackground();
 		drawSquare(square);
 		drawBoundry(boundry);
+		renderScore();
 
 		if (square.isInBoundry()) {
 			winning();
