@@ -74,7 +74,7 @@
 	};
 
 	square.outOfBounds = function() {
-		if (square.topX < 0 || square.topX > document.width || square.bottomY < 0 || square.bottomY > document.height) {
+		if (square.topX < 0 || square.topX + square.size > document.width || square.bottomY - square.size < 0 || square.bottomY > document.height) {
 			return true;
 		}
 	};
