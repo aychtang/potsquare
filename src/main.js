@@ -21,26 +21,44 @@
 	});
 
 	var square = {
-		x: canvas.width / 2,
-		y: canvas.height / 2,
 		size: 50,
-		speed: 20
+		speed: 20,
+		topX: 0,
+		topY: 0,
+		bottomX: 0,
+		bottomY: 0
+	};
+
+	square.setSquareX = function(x) {
+		square.topX = x;
+		square.bottomX = square.topX + square.size;
+	};
+
+	square.setSquareY = function(y) {
+		square.topY = y;
+		square.bottomY = square.topY + square.size;
+	};
+
+	square.setSquareSize = function(size) {
+		square.size = size;
+		square.bottomY = square.topY + square.size;
+		square.bottomX = square.topX + square.size;
 	};
 
 	square.left = function() {
-		square.x -= square.speed;
+		square.setSquareX(square.topX - square.speed);
 	};
 
 	square.right = function() {
-		square.x += square.speed;
+		square.setSquareX(square.topX + square.speed);
 	};
 
 	square.up = function() {
-		square.y -= square.speed;
+		square.setSquareY(square.topY - square.speed);
 	};
 
 	square.down = function() {
-		square.y += square.speed;
+		square.setSquareY(square.topY + square.speed);
 	};
 
 	var drawBackground = function() {
@@ -50,16 +68,17 @@
 
 	var drawSquare = function(square) {
 		context.fillStyle = 'green';
-		context.fillRect(square.x, square.y, square.size, square.size);
-	};
-
-	var setSquareSize = function(size) {
-		square.size = size;
+		context.fillRect(square.topX, square.topY, square.size, square.size);
 	};
 
 	socket.on('potread', function(data) {
-		setSquareSize(data);
+		square.setSquareSize(data);
 	});
+
+	var initSquarePosition = function() {
+		square.setSquareX(canvas.width / 2);
+		square.setSquareY(canvas.height / 2);
+	};
 
 	var mainLoop = function() {
 		window.requestAnimationFrame(mainLoop);
@@ -67,6 +86,7 @@
 		drawSquare(square);
 	};
 
+	initSquarePosition();
 	mainLoop();
 
 }());
