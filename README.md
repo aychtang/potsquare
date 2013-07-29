@@ -17,5 +17,5 @@ npm install
 node src/server
 ```
 
-Once the server is ready go to localhost:8080 and play!
+Once the server is ready go to localhost:8000 and play!
     
