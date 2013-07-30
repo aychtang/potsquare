@@ -14,7 +14,8 @@ Then in terminal:
 git clone https://github.com/Cheeseen/potsquare.git
 cd potsquare
 npm install
-node src/server
+cd src
+node server
 ```
 
 Once the server is ready go to localhost:8000 and play!
